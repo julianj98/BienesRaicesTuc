@@ -56,7 +56,7 @@ const autenticar = async(req,res)=>{
 
     //autenticar el usuario
     const token= generarJWT({id:usuario.id,nombre:usuario.nombre})
-    console.log(token)
+    //console.log(token)
     //almacenar en un cookie
     return res.cookie('_token',token,{
         httpOnly:true,
@@ -142,7 +142,7 @@ const registrar = async(req,res)=>{
 //funcion que comprueba una cuenta
 const confirmar = async (req,res)=>{
     const {token} = req.params
-    console.log(token)
+    //console.log(token)
     //verificar si el token es valido
     const usuario = await Usuario.findOne({where:{token}})
     if(!usuario){

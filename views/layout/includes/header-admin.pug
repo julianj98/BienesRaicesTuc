@@ -5,8 +5,11 @@ header.bg-indigo-600.p-4
                 span.font-normal Raices Tuc
 
         nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
+            if (usuario)
+                span.text-white.mx-2= `Hola, ${usuario.nombre}`
             a(href="") Mis Propiedades
             a(href="") Mi perfil
+
 
             form(action="/auth/cerrar-sesion" method="POST")
                 input(type="hidden" name="_csrf" value=csrfToken)

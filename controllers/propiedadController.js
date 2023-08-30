@@ -13,6 +13,7 @@ const admin=async (req,res)=>{
     }
     try {
         const {id} = req.usuario
+        const usuario = await Usuario.findByPk(id); 
         //limites para el paginador
         const limit=10;
         const offset= ((paginaActual*limit)-limit)
@@ -36,7 +37,7 @@ const admin=async (req,res)=>{
                 }
             })
         ])
-        console.log(paginaActual)
+        //console.log(paginaActual)
         res.render('propiedades/admin',{
             pagina: 'Mis propiedades',
             csrfToken: req.csrfToken(),
@@ -45,7 +46,8 @@ const admin=async (req,res)=>{
             paginaActual:Number(paginaActual),
             total,
             offset,
-            limit
+            limit,
+            usuario
         })
     } catch (error) {
         console.log(error)
@@ -361,6 +363,7 @@ const enviarMensaje = async(req,res)=>{
 //leer mensajes recibidos
 const verMensajes = async (req,res) =>{
     const {id} = req.params
+    const usuario = await Usuario.findByPk(id); 
 
     //validar q la propiedad exista
     const propiedad = await Propiedad.findByPk(id,{     
@@ -382,7 +385,8 @@ const verMensajes = async (req,res) =>{
     res.render('propiedades/mensajes',{
         pagina:'Mensajes',
         mensajes:propiedad.mensajes,
-        formatearFecha
+        formatearFecha,
+        usuario
     })
 }
 
