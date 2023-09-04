@@ -1,0 +1,16 @@
+extends ../layout/admin
+
+block styles 
+    meta(name='csrf-token' content=csrfToken)
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css")
+
+block contenido
+    div.mx-auto.py-8
+        a(href="/mis-propiedades" class="unded py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-sm  font-bold text-center text-white uppercase my-5 inline-block w-full sm:w-auto") Volver
+
+        h1.text-4xl.font-extrabold.text-center Mi Perfil
+
+        .profile-info.mt-8.p-4.bg-white.shadow-lg.rounded-lg.text-center.mx-auto.max-w-md
+            p.text-gray-600.font-bold.text-lg Nombre: #{usuario.nombre}
+            p.text-gray-600.font-bold.text-lg Email: #{usuario.email}
+            p.text-gray-600.font-bold.text-lg Cantidad de Propiedades: #{cantidadDePropiedades}

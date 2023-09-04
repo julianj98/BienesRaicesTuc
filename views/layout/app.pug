@@ -7,7 +7,10 @@ html(lang="es")
         block styles
         link(rel="stylesheet", href="/css/app.css")
     body.min-h-screen.bg-gray-50
-        include includes/header-app
+        if (usuario)
+            include includes/header-admin
+        else
+            include includes/header-app
         main(class="mx-auto containter mt-10 px-2")
             block contenido
 

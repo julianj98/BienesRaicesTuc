@@ -15,7 +15,7 @@ const admin=async (req,res)=>{
         const {id} = req.usuario
         const usuario = await Usuario.findByPk(id); 
         //limites para el paginador
-        const limit=10;
+        const limit=5;
         const offset= ((paginaActual*limit)-limit)
 
         const [propiedades,total] = await Promise.all([
@@ -390,6 +390,22 @@ const verMensajes = async (req,res) =>{
     })
 }
 
+const perfil = async(req, res) => {
+    // Obtener los datos del usuario y la cantidad de propiedades
+    const { usuario } = req; // Asegúrate de que la información del usuario esté disponible en req
+    const { id } = req.usuario;
+    const cantidadDePropiedades = await Propiedad.count({
+        where: {
+            usuarioId: id,
+        },
+    });  
+    // Renderizar la vista de perfil y pasar los datos
+    res.render('propiedades/perfil', {
+      pagina:"Mi perfil",
+      usuario,
+      cantidadDePropiedades,
+    });
+  };
 export {
     admin,
     crear,
@@ -402,5 +418,6 @@ export {
     cambiarEstado,
     mostrarPropiedad,
     enviarMensaje,
-    verMensajes
+    verMensajes,
+    perfil
 }

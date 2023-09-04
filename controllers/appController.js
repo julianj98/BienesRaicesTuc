@@ -1,4 +1,4 @@
-import {Precio,Categoria,Propiedad} from '../models/index.js'
+import {Precio,Categoria,Propiedad, Usuario} from '../models/index.js'
 import {Sequelize} from 'sequelize'
 const inicio = async(req,res)=>{
 
@@ -36,13 +36,18 @@ const inicio = async(req,res)=>{
             ]
         })
     ])
-
+    let usuario = null; // Inicializa usuario como null
+    if( req.usuario){
+        const { id } = req.usuario;
+        usuario = await Usuario.findByPk(id);    
+    } 
     res.render('inicio',{
         pagina:'Inicio',
         categorias,
         precios,
         casas,
         departamentos,
+        usuario,
         csrfToken: req.csrfToken()
     })
 }

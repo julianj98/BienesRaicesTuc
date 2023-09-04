@@ -1,6 +1,6 @@
 import express from "express"
 import {body} from "express-validator"
-import { admin,crear,guardar, agregarImagen, almacenarImagen,editar, guardarCambios,eliminar, cambiarEstado, mostrarPropiedad, enviarMensaje, verMensajes  } from "../controllers/propiedadController.js";
+import { admin,crear,guardar, agregarImagen, almacenarImagen,editar, guardarCambios,eliminar, cambiarEstado, mostrarPropiedad, enviarMensaje, verMensajes,perfil  } from "../controllers/propiedadController.js";
 import protegerRuta from "../middleware/protegerRuta.js";
 import upload from '../middleware/subirImagen.js'
 import identificarUsuario from '../middleware/identificarUsuario.js'
@@ -77,5 +77,6 @@ router.get('/mensajes/:id',
     protegerRuta,
     verMensajes
 )
+router.get('/perfil',protegerRuta, perfil);
 
 export default router
