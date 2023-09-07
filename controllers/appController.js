@@ -59,6 +59,10 @@ const categoria =  async(req,res)=>{
     if(!categoria){
         return res.redirect('/404')
     }
+    if (categoria.nombre.toLowerCase() === 'cabañas') {
+        categoria.nombre = 'Cabaña'; // Corregir la categoría "cabaña" a "cabañas"
+    }
+
     //obtener las propiedades
     const propiedades= await Propiedad.findAll({
         where:{
