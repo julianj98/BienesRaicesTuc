@@ -56,6 +56,7 @@ const admin=async (req,res)=>{
 }
 //formulario para crear una nueva propiedad
 const crear = async(req,res)=>{
+    const { usuario } = req; 
     //consultar modelo de precios y categoria
     const [categorias,precios] = await Promise.all([
         Categoria.findAll(),
@@ -66,6 +67,7 @@ const crear = async(req,res)=>{
         pagina: 'Crear propiedad',
         csrfToken: req.csrfToken(),
         categorias,
+        usuario,
         precios,
         datos:{}
     })
@@ -172,6 +174,7 @@ const almacenarImagen = async(req,res, next)=>{
 }
 const editar = async(req,res)=>{
     const {id} = req.params
+    const { usuario } = req; 
     //validar q la propiedad exista
     const propiedad = await Propiedad.findByPk(id)
 
@@ -192,6 +195,7 @@ const editar = async(req,res)=>{
         pagina: `Editar propiedad: ${propiedad.titulo}`,
         csrfToken: req.csrfToken(),
         categorias,
+        usuario,
         precios,
         datos:propiedad
     })
@@ -392,7 +396,7 @@ const verMensajes = async (req,res) =>{
 
 const perfil = async(req, res) => {
     // Obtener los datos del usuario y la cantidad de propiedades
-    const { usuario } = req; // Asegúrate de que la información del usuario esté disponible en req
+    const { usuario } = req; 
     const { id } = req.usuario;
     const cantidadDePropiedades = await Propiedad.count({
         where: {
@@ -403,6 +407,7 @@ const perfil = async(req, res) => {
     res.render('propiedades/perfil', {
       pagina:"Mi perfil",
       usuario,
+      csrfToken: req.csrfToken(),
       cantidadDePropiedades,
     });
   };
