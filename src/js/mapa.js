@@ -12,8 +12,8 @@
 
     //pin
     marker = new L.marker([lat,lng],{
-        draggable:true,
-        autoPan:true,
+        draggable:true, // para mover el pin
+        autoPan:true, // para centrar el mapa
     })
     .addTo(mapa)
 
@@ -23,7 +23,7 @@
         const posicion = marker.getLatLng()
         mapa.panTo(new L.LatLng(posicion.lat,posicion.lng)) //para centrar el mapa
 
-        //obtenerinformacion de las calles
+        //obtener informacion de las calles
         geocodeService.reverse().latlng(posicion,14).run(function(error,resultado){
 
             marker.bindPopup(resultado.address.LongLabel)

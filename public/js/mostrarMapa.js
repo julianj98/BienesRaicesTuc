@@ -16,7 +16,7 @@
   \*******************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n(function(){\r\n    const lat = document.querySelector('#lat').textContent\r\n    const lng = document.querySelector('#lng').textContent\r\n    const calle = document.querySelector('#calle').textContent\r\n    const mapa = L.map('mapa').setView([lat,lng],16)\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(mapa);\r\n\r\n    //agregar el pin\r\n    L.marker([lat,lng])\r\n        .addTo(mapa)\r\n        .bindPopup(calle)\r\n\r\n})()\n\n//# sourceURL=webpack://finalweb/./src/js/mostrarMapa.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n(function(){\r\n    const lat = document.querySelector('#lat').textContent\r\n    const lng = document.querySelector('#lng').textContent\r\n    const calle = document.querySelector('#calle').textContent\r\n    const mapa = L.map('mapa').setView([lat,lng],16)\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(mapa);\r\n\r\n    //agregar el pin\r\n    L.marker([lat,lng])\r\n        .addTo(mapa)\r\n        .bindPopup(calle) //crea un popup cuando haces click\r\n\r\n})()\n\n//# sourceURL=webpack://finalweb/./src/js/mostrarMapa.js?");
 
 /***/ })
 

@@ -11,6 +11,6 @@
     //agregar el pin
     L.marker([lat,lng])
         .addTo(mapa)
-        .bindPopup(calle)
+        .bindPopup(calle) //crea un popup cuando haces click
 
 })()
