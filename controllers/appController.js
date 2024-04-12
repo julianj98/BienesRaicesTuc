@@ -54,6 +54,7 @@ const inicio = async(req,res)=>{
 
 const categoria =  async(req,res)=>{
     const { id} = req.params
+    const { usuario } = req;
     //comprobar q la categoria exista 
     const categoria = await Categoria.findByPk(id)
     if(!categoria){
@@ -75,6 +76,7 @@ const categoria =  async(req,res)=>{
     res.render('categoria',{
         pagina:`${categoria.nombre}s en venta`,
         propiedades,
+        usuario,
         csrfToken: req.csrfToken()
 
     })
@@ -90,6 +92,7 @@ const noEncontrado = (req,res)=>{
 
 const buscador = async (req,res)=>{
     const {termino} =req.body
+    const { usuario } = req;
 
     //validar q termino no este vacio
     if(!termino.trim()){
@@ -110,6 +113,7 @@ const buscador = async (req,res)=>{
     res.render('busqueda',{
         pagina: 'Resultados de la busqueda',
         propiedades,
+        usuario,
         csrfToken: req.csrfToken()
 
     })

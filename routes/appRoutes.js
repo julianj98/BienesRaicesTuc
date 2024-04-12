@@ -8,12 +8,12 @@ const router = express.Router()
 router.get('/',identificarUsuario,inicio)
 //categorias
 
-router.get('/categorias/:id',categoria)
+router.get('/categorias/:id',identificarUsuario,categoria)
 //pag 404
-router.get('/404',noEncontrado)
+router.get('/404',identificarUsuario,noEncontrado)
 
 //buscador
-router.post('/buscador',buscador)
+router.post('/buscador',identificarUsuario, buscador)
 
 
 export default router;
