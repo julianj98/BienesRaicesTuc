@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon start app.js",
+    "dev": "nodemon app.js",
+    "start": "node app.js",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "js": "webpack --watch",
     "server": "concurrently \"npm run css\" \"npm run js\"",
@@ -26,8 +27,9 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.1",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.4.3",
     "nodemailer": "^6.9.3",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
     "postcss": "^8.4.24",
     "postcss-cli": "^10.1.0",
     "pug": "^3.0.2",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1",
     "tailwindcss": "^3.3.2",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"

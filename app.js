@@ -41,9 +41,9 @@ app.use("/",propiedadesRoutes)
 app.use('/',appRoutes)
 app.use('/api',apiRoutes)
 
+const port = 8080;
+const host = '0.0.0.0';
 
-
-const port = process.env.port || 8080;
-app.listen(port,()=>{
-    console.log(`Server is running in port ${port}`)
+app.listen(port, host, () => {
+    console.log(`Server is running on http://localhost:${port}`)
 })

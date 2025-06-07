@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: bienes-raices
+    env: node
+    buildCommand: npm install
+    startCommand: npm run dev
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BD_NOMBRE
+        sync: false
+      - key: BD_USER
+        sync: false
+      - key: BD_PASS
+        sync: false
+      - key: BD_HOST
+        sync: false
+      - key: BD_PORT
+        value: 5432
+      - key: BD_DIALECT
+        value: postgres
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: BACKEND_URL
+        sync: false
