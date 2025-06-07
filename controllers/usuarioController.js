@@ -142,9 +142,12 @@ const registrar = async(req,res)=>{
 //funcion que comprueba una cuenta
 const confirmar = async (req,res)=>{
     const {token} = req.params
-    //console.log(token)
+    console.log('Token recibido:', token);
+    
     //verificar si el token es valido
     const usuario = await Usuario.findOne({where:{token}})
+    console.log('Usuario encontrado:', usuario ? 'Sí' : 'No');
+    
     if(!usuario){
         return res.render('auth/confirmar-cuenta',{
             pagina:'Error al confirmar tu cuenta',
@@ -156,6 +159,8 @@ const confirmar = async (req,res)=>{
     usuario.token = null;
     usuario.confirmado=true;
     await usuario.save();
+    console.log('Cuenta confirmada exitosamente');
+    
     return res.render('auth/confirmar-cuenta',{
         pagina:'Cuenta confirmada',
         mensaje: 'la cuenta se confirmo correctamente'

@@ -41,7 +41,15 @@ app.use("/",propiedadesRoutes)
 app.use('/',appRoutes)
 app.use('/api',apiRoutes)
 
-const port = 8080;
+// Manejar rutas no encontradas
+app.use((req, res) => {
+    res.status(404).render('404', {
+        pagina: '404 - Página no encontrada',
+        csrfToken: req.csrfToken()
+    });
+});
+
+const port = process.env.PORT || 8080;
 const host = '0.0.0.0';
 
 app.listen(port, host, () => {

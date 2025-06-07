@@ -1,5 +1,7 @@
-extends ./layout/app
+extends layout
 
-block contenido 
-    div(class="py-10")
-                h2(class="text-center text-4xl font-extrabold pt-10")= pagina
+block contenido
+    .contenido-principal
+        h1= pagina
+        p La página que buscas no existe
+        a(href="/" class="boton") Volver al Inicio
