@@ -1,59 +1,67 @@
 import express from 'express';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
-import usuarioRoutes from './routes/usuarioRoutes.js'
-import propiedadesRoutes from './routes/propiedadesRoutes.js'
-import appRoutes from './routes/appRoutes.js'
-import apiRoutes from './routes/apiRoutes.js'
-import db from './config/db.js'
+import usuarioRoutes from './routes/usuarioRoutes.js';
+import propiedadesRoutes from './routes/propiedadesRoutes.js';
+import appRoutes from './routes/appRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
+import db from './config/db.js';
 
-//crear la app
+// Crear la app
 const app = express();
 
-//habilitar lectura de datos de formlularios
+// Habilitar lectura de datos de formularios
 app.use(express.urlencoded({ extended: true }));
 
-//habilitar cookie parser
+// Habilitar cookie parser
 app.use(cookieParser());
 
-//conexion a la db
+// Habilitar CSRF
+app.use(csrf({ cookie: true }));
+
+// Excluir CSRF solo para la ruta /auth/confirmar/:token
+app.use((req, res, next) => {
+    const csrfExcludedRoutes = [
+        /^\/auth\/confirmar\/[\w-]+$/
+    ];
+    const isExcluded = csrfExcludedRoutes.some((pattern) => pattern.test(req.path));
+
+    if (isExcluded) {
+        return next(); // No intenta usar csrfToken
+    }
+
+    // Si no está excluida, asigna el token a las vistas
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+
+// Conexión a la base de datos
 try {
     await db.authenticate();
-    db.sync();
+    await db.sync();
     console.log("Conexión exitosa a la base de datos");
 } catch (error) {
     console.log(error);
 }
 
-//habilitar pug
+// Habilitar Pug
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-//carpeta pública
+// Carpeta pública
 app.use(express.static('public'));
 
-//Routing SIN CSRF para la ruta de confirmación (GET)
+// Routing
 app.use("/auth", usuarioRoutes);
-
-// Aplica CSRF a todo lo que viene después
-app.use(csrf({ cookie: true }));
-
-// Middleware para pasar el token CSRF a todas las vistas
-app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-});
-
-// Resto del routing CON CSRF
 app.use("/", propiedadesRoutes);
 app.use("/", appRoutes);
 app.use("/api", apiRoutes);
 
-// Manejar rutas no encontradas
+// Página 404
 app.use((req, res) => {
     res.status(404).render('404', {
         pagina: '404 - Página no encontrada',
-        csrfToken: req.csrfToken()
+        csrfToken: res.locals.csrfToken || '' // por si no se setea en rutas excluidas
     });
 });
 
