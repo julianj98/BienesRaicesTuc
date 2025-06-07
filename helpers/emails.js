@@ -1,60 +1,50 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend';
 
-const emailRegistro= async (datos)=>{   
-    const transport = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
-      const {email,nombre,token} = datos
-      //enviar mail
-      await transport.sendMail({
-        from: ' BienesRaices.com',
-        to: email,
-        subject:'Confirma tu cuenta en BienesRaices.com',
-        text:'Confirma tu cuenta en BienesRaices.com',
-        html:`
-          <p> Hola ${nombre}, comprueba tu cuenta en BienesRaices.com</p>
-          
-          <p>Tu cuenta esta lista, solo debes confirmala con el siguiente enlace:
-          
-          <a href="${process.env.BACKEND_URL}/auth/confirmar/${token}">Confirmar Cuenta </a> </p>
+const resend = new Resend(process.env.RESEND_API);
 
-          <p> Si tu no creaste esta cuenta, puedes ignorar el mensaje </p>
-          `
-      })
+const emailRegistro = async (datos) => {   
+    const {email, nombre, token} = datos;
+    
+    try {
+        await resend.emails.send({
+            from: 'BienesRaices <onboarding@resend.dev>',
+            to: email,
+            subject: 'Confirma tu cuenta en BienesRaices.com',
+            html: `
+                <p>Hola ${nombre}, comprueba tu cuenta en BienesRaices.com</p>
+                
+                <p>Tu cuenta esta lista, solo debes confirmala con el siguiente enlace:
+                <a href="${process.env.BACKEND_URL}/auth/confirmar/${token}">Confirmar Cuenta</a></p>
+
+                <p>Si tu no creaste esta cuenta, puedes ignorar el mensaje</p>
+            `
+        });
+    } catch (error) {
+        console.log('Error al enviar email:', error);
+    }
 }
 
-const emailOlvidePassword= async (datos)=>{   
-  const transport = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
-    const {email,nombre,token} = datos
-    //enviar mail
-    await transport.sendMail({
-      from: ' BienesRaices.com',
-      to: email,
-      subject:'Reestablece tu Passoword en BienesRaices.com',
-      text:'Reestablece tu Passoword en BienesRaices.com',
-      html:`
-        <p> Hola ${nombre}, has solicitado reestablecer tu password  en BienesRaices.com</p>
-        
-        <p>sigue el siguiente enlace para generar un password nuevo:
-        <a href="${process.env.BACKEND_URL}/auth/olvide-password/${token}">Reestablecer Password </a> </p>
+const emailOlvidePassword = async (datos) => {   
+    const {email, nombre, token} = datos;
+    
+    try {
+        await resend.emails.send({
+            from: 'BienesRaices <onboarding@resend.dev>',
+            to: email,
+            subject: 'Reestablece tu Password en BienesRaices.com',
+            html: `
+                <p>Hola ${nombre}, has solicitado reestablecer tu password en BienesRaices.com</p>
+                
+                <p>Sigue el siguiente enlace para generar un password nuevo:
+                <a href="${process.env.BACKEND_URL}/auth/olvide-password/${token}">Reestablecer Password</a></p>
 
-        <p> Si tu no solicitaste el cambio de password, puedes ignorar el mensaje </p>
-        `
-    })
+                <p>Si tu no solicitaste el cambio de password, puedes ignorar el mensaje</p>
+            `
+        });
+    } catch (error) {
+        console.log('Error al enviar email:', error);
+    }
 }
-
 
 export {
     emailRegistro,
