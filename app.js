@@ -10,39 +10,46 @@ import db from './config/db.js';
 // Crear la app
 const app = express();
 
-// Habilitar lectura de datos de formularios
+// Conexión a la base de datos
+try {
+    await db.authenticate();
+    await db.sync();
+    console.log("✅ Conexión exitosa a la base de datos");
+} catch (error) {
+    console.log("❌ Error en la base de datos:", error);
+}
+
+// Habilitar lectura de formularios
 app.use(express.urlencoded({ extended: true }));
 
 // Habilitar cookie parser
 app.use(cookieParser());
 
-// Habilitar CSRF
-app.use(csrf({ cookie: true }));
-
-// Excluir CSRF solo para la ruta /auth/confirmar/:token
+// Middleware CSRF aplicado globalmente
+const csrfProtection = csrf({ cookie: true });
 app.use((req, res, next) => {
+    // Rutas que no usan csrfToken
     const csrfExcludedRoutes = [
         /^\/auth\/confirmar\/[\w-]+$/
     ];
     const isExcluded = csrfExcludedRoutes.some((pattern) => pattern.test(req.path));
 
     if (isExcluded) {
-        return next(); // No intenta usar csrfToken
+        return next(); // Saltar protección CSRF
+    } else {
+        return csrfProtection(req, res, next); // Aplicar CSRF
     }
-
-    // Si no está excluida, asigna el token a las vistas
-    res.locals.csrfToken = req.csrfToken();
-    next();
 });
 
-// Conexión a la base de datos
-try {
-    await db.authenticate();
-    await db.sync();
-    console.log("Conexión exitosa a la base de datos");
-} catch (error) {
-    console.log(error);
-}
+// Agregar csrfToken a res.locals si existe
+app.use((req, res, next) => {
+    if (typeof req.csrfToken === 'function') {
+        res.locals.csrfToken = req.csrfToken();
+    } else {
+        res.locals.csrfToken = '';
+    }
+    next();
+});
 
 // Habilitar Pug
 app.set('view engine', 'pug');
@@ -61,7 +68,7 @@ app.use("/api", apiRoutes);
 app.use((req, res) => {
     res.status(404).render('404', {
         pagina: '404 - Página no encontrada',
-        csrfToken: res.locals.csrfToken || '' // por si no se setea en rutas excluidas
+        csrfToken: res.locals.csrfToken || ''
     });
 });
 
@@ -69,5 +76,5 @@ const port = process.env.PORT || 8080;
 const host = '0.0.0.0';
 
 app.listen(port, host, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`🚀 Server running on http://localhost:${port}`);
 });
