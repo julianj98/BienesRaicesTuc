@@ -10,6 +10,9 @@ import db from './config/db.js';
 // Crear la app
 const app = express();
 
+// Configurar el base URL
+app.set('baseUrl', process.env.BASE_URL || '');
+
 // Conexión a la base de datos
 try {
     await db.authenticate();
